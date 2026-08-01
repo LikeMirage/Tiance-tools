@@ -1,0 +1,10 @@
+[
+  {
+    "title": "生成默认 PNG 图片",
+    "content": "输入参数：\n{\n  \"prompt\": \"一只戴着宇航员头盔的橘猫站在月球表面，远处可见蓝色地球，电影感光照，写实摄影\"\n}\n\n图片自动保存到当前项目 generated/images，并作为图片资源返回。"
+  },
+  {
+    "title": "生成横版高质量图片",
+    "content": "输入参数：\n{\n  \"prompt\": \"现代科技产品发布会主视觉，深蓝背景，金色流光，画面中央留出标题区域，不要出现品牌标志\",\n  \"output_path\": \"assets/launch-key-visual.webp\",\n  \"size\": \"1536x1024\",\n  \"quality\": \"high\",\n  \"output_format\": \"webp\",\n  \"output_compression\": 85\n}"
+  }
+]
