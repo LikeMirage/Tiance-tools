@@ -1,12 +1,23 @@
 {
   "additionalProperties": true,
   "properties": {
-    "ok": { "type": "boolean" },
-    "action": { "type": "string" },
-    "error": { "type": "string" },
-    "plan": { "type": "object" },
-    "project": { "type": "object" }
+    "ok": {
+      "type": "boolean"
+    },
+    "action": {
+      "type": "string"
+    },
+    "error": {
+      "type": "string"
+    },
+    "dryRun": {"type": "boolean"},
+    "preview": {"type": "object"},
+    "project": {
+      "type": "object"
+    }
   },
-  "required": ["ok"],
+  "required": [
+    "ok"
+  ],
   "type": "object"
 }
