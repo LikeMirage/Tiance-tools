@@ -1,32 +1,26 @@
 {
   "additionalProperties": true,
-  "description": "返回归档目录、保存条目、文件路径、失败原因和警告。",
+  "description": "成功时返回实际使用的搜索引擎、批次目录、索引与清单路径、查询统计、网址统计及每篇正文字符数，不返回网页正文。完整搜索结果和正文保存在当前工作区 web_searches 目录。失败时返回 ok=false、稳定错误码和明确原因。",
   "properties": {
     "ok": {
-      "description": "是否成功。",
       "type": "boolean"
     },
     "summary": {
-      "description": "简短结果摘要。",
       "type": "string"
     },
     "data": {
-      "description": "归档结果。",
       "type": "object"
     },
     "warnings": {
-      "description": "非阻断警告。",
       "items": {
         "type": "string"
       },
       "type": "array"
     },
     "error": {
-      "description": "失败时的错误说明。",
       "type": "string"
     },
     "error_info": {
-      "description": "失败时的机器可读错误信息。",
       "type": "object"
     }
   },
