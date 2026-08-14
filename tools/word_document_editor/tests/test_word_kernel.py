@@ -8,8 +8,9 @@ import sys
 from zipfile import ZipFile
 
 from docx import Document
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement
-from docx.shared import Pt, RGBColor
+from docx.shared import Inches, Pt, RGBColor
 from lxml import etree
 
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
@@ -108,6 +109,48 @@ def test_create_uses_content_aware_table_widths_and_native_formula(tmp_path: Pat
     assert widths[1] > widths[0]
     assert root.xpath("count(.//m:oMath)", namespaces=NS) >= 1
     assert not list(tmp_path.glob("*.docx.tmp"))
+
+
+def test_create_defaults_match_markdown_to_word_base_style(tmp_path: Path) -> None:
+    output = tmp_path / "styled.docx"
+    result = call(
+        tmp_path,
+        {
+            "action": "create",
+            "output_path": output.name,
+            "elements": [
+                {"type": "heading", "level": 1, "text": "标题"},
+                {"type": "paragraph", "text": "正文内容"},
+                {"type": "table", "rows": [["表头", "数值"], ["项目", "1"]]},
+            ],
+        },
+    )
+    assert result["ok"] is True, result
+
+    doc = Document(output)
+    section = doc.sections[0]
+    assert section.top_margin == Inches(0.75)
+    assert section.bottom_margin == Inches(0.75)
+    assert section.left_margin == Inches(0.75)
+    assert section.right_margin == Inches(0.75)
+
+    heading, body = doc.paragraphs[:2]
+    assert heading.runs[0].font.size == Pt(18)
+    assert heading.runs[0].font.color.rgb == RGBColor(0, 0, 0)
+    assert heading.paragraph_format.keep_with_next is True
+    assert body.runs[0].font.size == Pt(12)
+    assert body.runs[0].font.color.rgb == RGBColor(0, 0, 0)
+    assert body.paragraph_format.space_after == Pt(6)
+    assert body.paragraph_format.line_spacing == 1.15
+    assert abs(body.paragraph_format.first_line_indent - Inches(0.28)) <= Pt(0.01)
+
+    table = doc.tables[0]
+    assert table.alignment == WD_TABLE_ALIGNMENT.LEFT
+    header_run = table.cell(0, 0).paragraphs[0].runs[0]
+    assert header_run.font.size == Pt(10.5)
+    assert header_run.font.color.rgb == RGBColor(0, 0, 0)
+    root = document_xml(output)
+    assert root.xpath("string(.//w:tbl[1]/w:tr[1]/w:tc[1]/w:tcPr/w:shd/@w:fill)", namespaces=NS) == "F2F2F2"
 
 
 def test_invalid_formula_is_preserved_as_text_with_warning(tmp_path: Path) -> None:
@@ -863,6 +906,202 @@ def test_word_range_locates_table_formula_and_local_inspect_is_typed(tmp_path: P
     assert edited["ok"] is True, edited
     root = document_xml(output)
     assert root.xpath(".//m:oMath//m:r/w:rPr/w:color/@w:val", namespaces=NS) == ["FF0000"]
+
+
+def test_word_range_adjusts_small_formula_boundary_drift(tmp_path: Path) -> None:
+    source = tmp_path / "formula_offset.docx"
+    doc = Document()
+    paragraph = doc.add_paragraph()
+    equation = OxmlElement("m:oMath")
+    run = OxmlElement("m:r")
+    math_text = OxmlElement("m:t")
+    math_text.text = "x=1"
+    run.append(math_text)
+    equation.append(run)
+    paragraph._p.append(equation)
+    doc.save(source)
+
+    result = call_raw(
+        tmp_path,
+        {
+            "action": "inspect",
+            "input_path": source.name,
+            "inspect": {
+                "selection": {
+                    "word_range": {
+                        "kind": "word_range",
+                        "start": {"container": "body", "paragraphIndex": 1, "characterOffset": 0},
+                        "end": {"container": "body", "paragraphIndex": 1, "characterOffset": 4},
+                    }
+                }
+            },
+        },
+    )
+
+    assert result["ok"] is True, result
+    selection = result["data"]["selection"]
+    assert selection["content_kind"] == "equation"
+    assert selection["content_markdown"] == "$x=1$"
+    assert selection["resolution"]["strategy"] == "equation_boundary_adjustment"
+    assert selection["resolution"]["offset_difference"] == 1
+
+
+def test_word_range_returns_mixed_segments_and_markdown(tmp_path: Path) -> None:
+    source = tmp_path / "mixed_range.docx"
+    doc = Document()
+    paragraph = doc.add_paragraph("left")
+    equation = OxmlElement("m:oMath")
+    run = OxmlElement("m:r")
+    math_text = OxmlElement("m:t")
+    math_text.text = "x=1"
+    run.append(math_text)
+    equation.append(run)
+    paragraph._p.append(equation)
+    paragraph.add_run("right")
+    doc.save(source)
+
+    result = call_raw(
+        tmp_path,
+        {
+            "action": "inspect",
+            "input_path": source.name,
+            "inspect": {
+                "selection": {
+                    "word_range": {
+                        "kind": "word_range",
+                        "start": {"container": "body", "paragraphIndex": 1, "characterOffset": 0},
+                        "end": {"container": "body", "paragraphIndex": 1, "characterOffset": 12},
+                    }
+                }
+            },
+        },
+    )
+
+    assert result["ok"] is True, result
+    selection = result["data"]["selection"]
+    assert selection["content_kind"] == "mixed"
+    assert selection["selected_rendered_text"] == "leftx=1right"
+    assert selection["content_markdown"] == "left$x=1$right"
+    assert [segment["kind"] for segment in selection["segments"]] == ["text", "equation", "text"]
+
+
+def test_word_range_offset_failure_returns_local_candidates(tmp_path: Path) -> None:
+    source = tmp_path / "formula_candidates.docx"
+    doc = Document()
+    paragraph = doc.add_paragraph()
+    equation = OxmlElement("m:oMath")
+    run = OxmlElement("m:r")
+    math_text = OxmlElement("m:t")
+    math_text.text = "x=1"
+    run.append(math_text)
+    equation.append(run)
+    paragraph._p.append(equation)
+    doc.save(source)
+
+    result = call_raw(
+        tmp_path,
+        {
+            "action": "inspect",
+            "input_path": source.name,
+            "inspect": {
+                "selection": {
+                    "word_range": {
+                        "kind": "word_range",
+                        "start": {"container": "body", "paragraphIndex": 1, "characterOffset": 0},
+                        "end": {"container": "body", "paragraphIndex": 1, "characterOffset": 20},
+                    },
+                    "expected_text": "x=1",
+                }
+            },
+        },
+    )
+
+    assert result["ok"] is False
+    assert result["error_info"]["code"] == "REFERENCE_OFFSET_MISMATCH"
+    details = result["error_info"]["details"]
+    assert details["container_found"] is True
+    assert details["actual_lengths"]["start_paragraph"] == 3
+    assert any(candidate["content_kind"] == "equation" for candidate in details["candidates"])
+
+
+def test_word_range_content_mismatch_ranks_nearby_approximate_candidate(tmp_path: Path) -> None:
+    source = tmp_path / "text_candidates.docx"
+    doc = Document()
+    doc.add_paragraph("prefix targer suffix")
+    doc.save(source)
+
+    result = call_raw(
+        tmp_path,
+        {
+            "action": "inspect",
+            "input_path": source.name,
+            "inspect": {
+                "selection": {
+                    "word_range": {
+                        "kind": "word_range",
+                        "start": {"container": "body", "paragraphIndex": 1, "characterOffset": 0},
+                        "end": {"container": "body", "paragraphIndex": 1, "characterOffset": 6},
+                    },
+                    "expected_text": "target",
+                }
+            },
+        },
+    )
+
+    assert result["ok"] is False
+    assert result["error_info"]["code"] == "REFERENCE_CONTENT_MISMATCH"
+    candidates = result["error_info"]["details"]["candidates"]
+    assert any(candidate["content_text"] == "targer" for candidate in candidates)
+    assert candidates[0]["similarity"] >= 0.8
+
+
+def test_dry_run_checks_overwrite_and_token_includes_write_policy(tmp_path: Path) -> None:
+    source = tmp_path / "source.docx"
+    output = tmp_path / "output.docx"
+    doc = Document()
+    doc.add_paragraph("before")
+    doc.save(source)
+    doc.save(output)
+    operation = {"type": "replace_text", "old_text": "before", "new_text": "after"}
+
+    rejected = call_raw(
+        tmp_path,
+        {
+            "action": "edit",
+            "input_path": source.name,
+            "output_path": output.name,
+            "dry_run": True,
+            "operations": [operation],
+        },
+    )
+    assert rejected["error_info"]["code"] == "OUTPUT_EXISTS"
+    assert rejected["error_info"]["details"]["required_parameter"] == "overwrite=true"
+
+    preview = call_raw(
+        tmp_path,
+        {
+            "action": "edit",
+            "input_path": source.name,
+            "output_path": "new.docx",
+            "dry_run": True,
+            "overwrite": False,
+            "backup": True,
+            "operations": [operation],
+        },
+    )
+    changed_policy = call_raw(
+        tmp_path,
+        {
+            "action": "edit",
+            "input_path": source.name,
+            "output_path": "new.docx",
+            "overwrite": False,
+            "backup": False,
+            "operations": [operation],
+            "validation_token": preview["data"]["validation_token"],
+        },
+    )
+    assert changed_policy["error_info"]["code"] == "STALE_DRY_RUN"
 
 
 def test_edit_requires_matching_dry_run_token_and_reference_fingerprint(tmp_path: Path) -> None:
