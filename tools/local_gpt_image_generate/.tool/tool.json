@@ -2,7 +2,7 @@
   "description": "通过本机 OpenAI 兼容图片接口调用 gpt-image-2 生成图片。服务地址和模型固定，凭据从 Windows 凭据管理器或进程环境变量读取；图片保存到当前项目并以富媒体资源返回。",
   "display_name": "本机 GPT 图片生成",
   "execution": {
-    "parallel": false
+    "parallel": true
   },
   "files": {
     "examples": ".tool/examples.json",
