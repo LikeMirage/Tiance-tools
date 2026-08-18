@@ -1,8 +1,0 @@
-[
-  "tests/test_environment_health.py::EnvironmentHealthTests::test_candidate_retries_after_scoped_permission_repair",
-  "tests/test_environment_health.py::EnvironmentHealthTests::test_candidate_returns_stable_error_when_repair_fails",
-  "tests/test_environment_health.py::EnvironmentHealthTests::test_health_report_marks_failed_candidate_residue_unhealthy",
-  "tests/test_environment_health.py::EnvironmentHealthTests::test_health_report_marks_protected_paths_unhealthy",
-  "tests/test_environment_health.py::EnvironmentHealthTests::test_permission_root_rejects_unrelated_directory",
-  "tests/test_environment_health.py::EnvironmentHealthTests::test_windows_acl_repair_is_scoped_and_verifiable"
-]
