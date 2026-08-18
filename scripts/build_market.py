@@ -49,7 +49,7 @@ def _build_tool(tool_root: Path) -> dict[str, object]:
         "author": str(manifest["author"]["name"]),
         "license": str(manifest["license"]),
         "callName": str(tool["name"]),
-        "displayName": str(tool["display_name"]),
+        "displayName": str(tool["registration_name"]),
         "summary": str(tool["description"]),
         "runtime": str(runtime["type"]),
         "packageUrl": f"packages/{package_name}",

@@ -103,7 +103,10 @@ def _validate_manifest(tool_id: str, manifest: dict[str, Any]) -> None:
 def _validate_tool(tool_id: str, tool: dict[str, Any], tool_root: Path) -> None:
     call_name = tool.get("name")
     require(isinstance(call_name, str) and CALL_NAME_PATTERN.fullmatch(call_name), f"{tool_id} 的调用名称非法。")
-    require(isinstance(tool.get("display_name"), str) and tool["display_name"].strip(), f"{tool_id} 缺少展示名称。")
+    require(
+        isinstance(tool.get("registration_name"), str) and tool["registration_name"].strip(),
+        f"{tool_id} 缺少注册名称。",
+    )
     require(isinstance(tool.get("description"), str) and tool["description"].strip(), f"{tool_id} 缺少用途说明。")
     runtime = tool.get("runtime")
     require(isinstance(runtime, dict), f"{tool_id} 缺少运行定义。")

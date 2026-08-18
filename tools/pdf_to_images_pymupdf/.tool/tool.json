@@ -1,6 +1,6 @@
 {
   "description": "使用 PyMuPDF 将工作区内 PDF 页面渲染为图片，支持页码范围、DPI/缩放、图片格式、色彩空间、透明背景、批注、裁剪区域、旋转、文本旁路文件和 manifest。",
-  "display_name": "PDF 转图片",
+  "registration_name": "PDF 转图片",
   "execution": {
     "parallel": true
   },
