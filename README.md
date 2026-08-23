@@ -13,12 +13,15 @@ tools/<tool-id>/
 │  ├─ tool.json
 │  ├─ input.schema.json
 │  ├─ output.schema.json
-│  └─ examples.json
+│  ├─ examples.json
+│  └─ permissions.json
 └─ program/
 ```
 
 - `manifest.json`：市场身份、版本、作者、许可证和兼容范围。
 - `.tool/tool.json`：调用名称、展示名称、用途和运行方式。
+- `.tool/input.schema.json`：输入参数合同；顶层参数可用 `permission_type` 声明权限类型。
+- `.tool/permissions.json`：该工具各权限点在不同作用范围内的默认处理策略。
 - `program/`：工具运行程序及发布者决定公开的配置模板。
 
 ## 收录要求

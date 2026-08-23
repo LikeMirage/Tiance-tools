@@ -17,6 +17,7 @@ REQUIRED_FILES = {
     ".tool/input.schema.json",
     ".tool/output.schema.json",
     ".tool/examples.json",
+    ".tool/permissions.json",
 }
 FORBIDDEN_PARTS = {".tiance", "dependencies", "__pycache__", ".git"}
 MAX_FILES = 2_000
@@ -108,6 +109,12 @@ def _validate_tool(tool_id: str, tool: dict[str, Any], tool_root: Path) -> None:
         f"{tool_id} 缺少注册名称。",
     )
     require(isinstance(tool.get("description"), str) and tool["description"].strip(), f"{tool_id} 缺少用途说明。")
+    files = tool.get("files")
+    require(isinstance(files, dict), f"{tool_id} 缺少合同文件定义。")
+    require(
+        files.get("permissions") == ".tool/permissions.json",
+        f"{tool_id} 的权限配置路径非法。",
+    )
     runtime = tool.get("runtime")
     require(isinstance(runtime, dict), f"{tool_id} 缺少运行定义。")
     runtime_type = runtime.get("type")

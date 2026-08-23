@@ -3,6 +3,7 @@
   "description": "创建、检查或安全编辑 .pptx。action=create 时传 output_path 和 slides；也可传 template_path 与 template_slide_indexes 复用模板页。action=edit 时传 input_path、output_path 和 operations；action=inspect 时传 input_path。坐标单位为英寸，x/y/w/h 均相对于幻灯片左上角。编辑默认不覆盖原文件，保存后会做基础完整性检查。",
   "properties": {
     "action": {
+      "permission_type": "none",
       "description": "操作类型。",
       "enum": [
         "create",
@@ -27,21 +28,25 @@
       "type": "string"
     },
     "input_path": {
+      "permission_type": "filesystem_read",
       "description": "已有 PPTX 路径。inspect/edit 必填。相对路径按工作区根目录解析。",
       "title": "输入 PPTX",
       "type": "string"
     },
     "output_path": {
+      "permission_type": "filesystem_write",
       "description": "输出 PPTX 路径。create/edit 必填。相对路径按工作区根目录解析。",
       "title": "输出 PPTX",
       "type": "string"
     },
     "template_path": {
+      "permission_type": "filesystem_read",
       "description": "create 可选：已有 PPTX 模板路径。会保留模板页和资源，可配合 template_slide_indexes 选择、复制、重排模板页。",
       "title": "模板 PPTX",
       "type": "string"
     },
     "template_slide_indexes": {
+      "permission_type": "none",
       "description": "create 可选：从模板中选取并按顺序复制的 0 基页码数组。支持重复页码；不传则保留模板全部页面。",
       "items": {
         "type": "integer"
@@ -50,24 +55,28 @@
       "type": "array"
     },
     "overwrite": {
+      "permission_type": "none",
       "default": false,
       "description": "输出文件已存在时是否覆盖。默认 false。",
       "title": "覆盖输出文件",
       "type": "boolean"
     },
     "backup": {
+      "permission_type": "none",
       "default": true,
       "description": "edit 且覆盖原文件时是否先创建 .bak 备份。",
       "title": "覆盖原文件前备份",
       "type": "boolean"
     },
     "dry_run": {
+      "permission_type": "none",
       "default": false,
       "description": "只检查将要执行的编辑操作，不写文件。create 时忽略。",
       "title": "预演编辑",
       "type": "boolean"
     },
     "page": {
+      "permission_type": "none",
       "additionalProperties": false,
       "description": "页面尺寸设置。默认 16:9 宽屏。",
       "properties": {
@@ -94,18 +103,21 @@
       "type": "object"
     },
     "theme": {
+      "permission_type": "none",
       "additionalProperties": true,
       "description": "主题设置。支持 primary_color、accent_color、background_color、text_color、muted_color、font_family。",
       "title": "主题",
       "type": "object"
     },
     "properties": {
+      "permission_type": "none",
       "additionalProperties": true,
       "description": "文档属性，例如 title、subject、author、company、category、keywords、comments。",
       "title": "文档属性",
       "type": "object"
     },
     "slides": {
+      "permission_type": "none",
       "description": "create 的幻灯片数组，或 edit/add_slide 操作中的 slide 对象。每页可用 layout 快速生成，也可传 elements 精确排版。",
       "items": {
         "additionalProperties": true,
@@ -239,6 +251,7 @@
       "type": "array"
     },
     "operations": {
+      "permission_type": "none",
       "description": "edit 操作数组。支持 replace_text、set_slide_title、add_slide、delete_slide、duplicate_slide、move_slide、reorder_slides。",
       "items": {
         "additionalProperties": true,
@@ -303,6 +316,7 @@
       "type": "array"
     },
     "inspect": {
+      "permission_type": "none",
       "additionalProperties": false,
       "description": "inspect 输出控制。",
       "properties": {
