@@ -1,0 +1,36 @@
+{
+  "description": "先调用gui_runtime start并等待成功锁定，再用gui_inspect start取得截图会话和坐标依据。依据明确的最新frame_id输入文本或按键。可引用elements返回的element_id；键盘输入前核查目标控件身份、可用状态和焦点；没有控件引用时核对所依据截图的焦点与画面。set_value通过UIAutomation直接设置可写非密码控件并校验结果。expected_elements可检查其他控件的名称、值、选中状态等；不能识别的区域用截图重新确认。",
+  "execution": {
+    "parallel": false
+  },
+  "files": {
+    "examples": ".tool/examples.json",
+    "input_schema": ".tool/input.schema.json",
+    "output_schema": ".tool/output.schema.json",
+    "permissions": ".tool/permissions.json"
+  },
+  "io": {
+    "input": "stdin_json",
+    "output": "stdout_json"
+  },
+  "keywords": [
+    "GUI",
+    "键盘",
+    "文本输入",
+    "按键",
+    "快捷键"
+  ],
+  "loading": {
+    "dynamic": false
+  },
+  "name": "gui_keyboard",
+  "registration_name": "GUI 键盘操作",
+  "runtime": {
+    "entry": "program/main.py",
+    "timeout_seconds": 75,
+    "type": "python"
+  },
+  "state": {
+    "enabled": true
+  }
+}
