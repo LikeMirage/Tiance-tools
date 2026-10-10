@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "kind": "tiance-tool-package",
-  "id": "doubao_vision_parse",
-  "version": "1.0.3",
+  "id": "gui_uia",
+  "version": "1.0.1",
   "author": {
-    "name": "LikeMirage"
+    "name": "Tiance"
   },
   "license": "CC0-1.0",
   "compatibility": {
-    "minTianceVersion": "0.3.23",
+    "minTianceVersion": "0.3.25",
     "platforms": [
       "windows-x64"
     ]

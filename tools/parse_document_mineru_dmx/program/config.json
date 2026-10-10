@@ -5,10 +5,10 @@
     "model_version": "pipeline",
     "html_model_version": "MinerU-HTML"
   },
-  "dmxapi": {
-    "base_url": "https://www.dmxapi.cn/v1",
+  "deepseek": {
+    "base_url": "https://api.deepseek.com",
     "api_key": "",
-    "model": "doubao-seed-1-6-flash-250828",
+    "model": "deepseek-flash",
     "temperature": 0.1,
     "top_p": 1,
     "max_output_tokens": 1200,
