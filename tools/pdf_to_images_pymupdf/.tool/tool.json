@@ -14,15 +14,6 @@
     "input": "stdin_json",
     "output": "stdout_json"
   },
-  "keywords": [
-    "PDF",
-    "转图片",
-    "PyMuPDF",
-    "渲染",
-    "PNG",
-    "JPG",
-    "文档图片"
-  ],
   "loading": {
     "dynamic": true
   },

@@ -10,7 +10,9 @@
   },
   {
     "title": "检查仓库及实际提交身份",
-    "input": {"action": "overview"}
+    "input": {
+      "action": "overview"
+    }
   },
   {
     "title": "使用显式身份预演提交",
@@ -34,6 +36,11 @@
   },
   {
     "title": "使用已有远端凭据预演推送",
-    "input": {"action": "push", "remote": "origin", "branch": "main", "dry_run": true}
+    "input": {
+      "action": "push",
+      "remote": "origin",
+      "branch": "main",
+      "dry_run": true
+    }
   }
 ]

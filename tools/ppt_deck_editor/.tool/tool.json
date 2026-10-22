@@ -14,26 +14,6 @@
     "input": "stdin_json",
     "output": "stdout_json"
   },
-  "keywords": [
-    "PPT",
-    "PPTX",
-    "PowerPoint",
-    "幻灯片",
-    "演示文稿",
-    "制作",
-    "编辑",
-    "图文排版",
-    "表格",
-    "流程图",
-    "架构图",
-    "路线图",
-    "KPI",
-    "方案对比",
-    "模板复用",
-    "文字检查",
-    "PPT 质量检查",
-    "安全编辑"
-  ],
   "loading": {
     "dynamic": true
   },

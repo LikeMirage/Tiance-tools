@@ -72,62 +72,6 @@
       "description": "是否保留末尾完全空白行。"
     },
     "sheets": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "action=export_markdown 时只提取指定 Sheet；省略时提取全部。"
-    },
-    "output_path": {
-      "permission_type": "filesystem_write",
-      "type": "string",
-      "title": "输出 Excel 路径",
-      "description": "action=create 时必填；action=edit 时可省略，默认另存为 原文件名_edited.xlsx。"
-    },
-    "overwrite": {
-      "permission_type": "none",
-      "type": "boolean",
-      "default": false,
-      "description": "目标文件已存在时是否覆盖。编辑已有文件默认不覆盖原文件。"
-    },
-    "create_parent_dirs": {
-      "permission_type": "none",
-      "type": "boolean",
-      "default": true,
-      "description": "输出目录不存在时是否创建。"
-    },
-    "sheet_name": {
-      "permission_type": "none",
-      "type": "string",
-      "description": "mode=simple_table 时的 Sheet 名称。"
-    },
-    "columns": {
-      "permission_type": "none",
-      "type": "array",
-      "description": "mode=simple_table 时的表头。",
-      "items": {
-        "type": "string"
-      }
-    },
-    "rows": {
-      "permission_type": "none",
-      "type": "array",
-      "description": "mode=simple_table 时的数据行，或部分 edit 操作里的二维数据。",
-      "items": {
-        "type": "array",
-        "items": {}
-      }
-    },
-    "active_sheet": {
-      "permission_type": "none",
-      "type": "string",
-      "description": "打开文件时默认激活的 Sheet 名称。"
-    },
-    "properties": {
-      "permission_type": "none",
-      "type": "object",
-      "additionalProperties": true,
-      "description": "工作簿属性，例如 title、subject、creator、company、category、keywords、description。"
-    },
-    "sheets": {
       "permission_type": "none",
       "type": "array",
       "minItems": 1,
@@ -442,6 +386,57 @@
           }
         }
       }
+    },
+    "output_path": {
+      "permission_type": "filesystem_write",
+      "type": "string",
+      "title": "输出 Excel 路径",
+      "description": "action=create 时必填；action=edit 时可省略，默认另存为 原文件名_edited.xlsx。"
+    },
+    "overwrite": {
+      "permission_type": "none",
+      "type": "boolean",
+      "default": false,
+      "description": "目标文件已存在时是否覆盖。编辑已有文件默认不覆盖原文件。"
+    },
+    "create_parent_dirs": {
+      "permission_type": "none",
+      "type": "boolean",
+      "default": true,
+      "description": "输出目录不存在时是否创建。"
+    },
+    "sheet_name": {
+      "permission_type": "none",
+      "type": "string",
+      "description": "mode=simple_table 时的 Sheet 名称。"
+    },
+    "columns": {
+      "permission_type": "none",
+      "type": "array",
+      "description": "mode=simple_table 时的表头。",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rows": {
+      "permission_type": "none",
+      "type": "array",
+      "description": "mode=simple_table 时的数据行，或部分 edit 操作里的二维数据。",
+      "items": {
+        "type": "array",
+        "items": {}
+      }
+    },
+    "active_sheet": {
+      "permission_type": "none",
+      "type": "string",
+      "description": "打开文件时默认激活的 Sheet 名称。"
+    },
+    "properties": {
+      "permission_type": "none",
+      "type": "object",
+      "additionalProperties": true,
+      "description": "工作簿属性，例如 title、subject、creator、company、category、keywords、description。"
     },
     "operations": {
       "permission_type": "filesystem_write",

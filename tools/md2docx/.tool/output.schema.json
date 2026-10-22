@@ -49,12 +49,25 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["source", "sheet", "range", "table_id"],
+        "required": [
+          "source",
+          "sheet",
+          "range",
+          "table_id"
+        ],
         "properties": {
-          "source": {"type": "string"},
-          "sheet": {"type": "string"},
-          "range": {"type": "string"},
-          "table_id": {"type": "string"}
+          "source": {
+            "type": "string"
+          },
+          "sheet": {
+            "type": "string"
+          },
+          "range": {
+            "type": "string"
+          },
+          "table_id": {
+            "type": "string"
+          }
         }
       }
     },

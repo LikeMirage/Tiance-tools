@@ -1,17 +1,40 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "required": ["action"],
+  "required": [
+    "action"
+  ],
   "properties": {
     "action": {
       "permission_type": "program_execute",
       "type": "string",
       "enum": [
-        "overview", "status", "diff", "log", "show_commit", "clone", "fetch", "init",
-        "connect_remote", "disconnect_remote", "create_branch", "switch_branch", "delete_branch",
-        "list_tags", "create_tag", "delete_tag", "list_submodules", "add_submodule",
-        "update_submodules", "configure_identity", "commit", "push", "pull", "restore",
-        "revert", "reset"
+        "overview",
+        "status",
+        "diff",
+        "log",
+        "show_commit",
+        "clone",
+        "fetch",
+        "init",
+        "connect_remote",
+        "disconnect_remote",
+        "create_branch",
+        "switch_branch",
+        "delete_branch",
+        "list_tags",
+        "create_tag",
+        "delete_tag",
+        "list_submodules",
+        "add_submodule",
+        "update_submodules",
+        "configure_identity",
+        "commit",
+        "push",
+        "pull",
+        "restore",
+        "revert",
+        "reset"
       ]
     },
     "dry_run": {
@@ -20,7 +43,12 @@
       "default": false,
       "description": "写操作设为 true 时只校验并返回预演结果，不修改工作区或远端。"
     },
-    "remote": {"permission_type": "external_data_modify", "type": "string", "default": "origin", "maxLength": 80},
+    "remote": {
+      "permission_type": "external_data_modify",
+      "type": "string",
+      "default": "origin",
+      "maxLength": 80
+    },
     "repository": {
       "permission_type": "external_data_modify",
       "type": "string",
@@ -33,20 +61,57 @@
       "maxLength": 500,
       "description": "clone 的工作区内目标子目录；省略时根据仓库名生成。"
     },
-    "branch": {"permission_type": "external_data_modify", "type": "string", "maxLength": 250},
-    "revision": {"permission_type": "external_data_modify", "type": "string", "maxLength": 100},
-    "paths": {"permission_type": "filesystem_write", "type": "array", "items": {"type": "string"}, "maxItems": 5000},
-    "staged": {"permission_type": "none", "type": "boolean", "default": false},
+    "branch": {
+      "permission_type": "external_data_modify",
+      "type": "string",
+      "maxLength": 250
+    },
+    "revision": {
+      "permission_type": "external_data_modify",
+      "type": "string",
+      "maxLength": 100
+    },
+    "paths": {
+      "permission_type": "filesystem_write",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 5000
+    },
+    "staged": {
+      "permission_type": "none",
+      "type": "boolean",
+      "default": false
+    },
     "force": {
       "permission_type": "none",
       "type": "boolean",
       "default": false,
       "description": "push 时强制推送；reset 时硬重置；子模块更新时强制。"
     },
-    "limit": {"permission_type": "none", "type": "integer", "minimum": 1, "maximum": 100, "default": 30},
-    "message": {"permission_type": "external_data_modify", "type": "string", "maxLength": 500},
-    "tag": {"permission_type": "external_data_modify", "type": "string", "maxLength": 250},
-    "submodule_path": {"permission_type": "external_data_modify", "type": "string", "maxLength": 500},
+    "limit": {
+      "permission_type": "none",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 30
+    },
+    "message": {
+      "permission_type": "external_data_modify",
+      "type": "string",
+      "maxLength": 500
+    },
+    "tag": {
+      "permission_type": "external_data_modify",
+      "type": "string",
+      "maxLength": 250
+    },
+    "submodule_path": {
+      "permission_type": "external_data_modify",
+      "type": "string",
+      "maxLength": 500
+    },
     "author_name": {
       "permission_type": "external_data_modify",
       "type": "string",
@@ -62,7 +127,10 @@
     "identity_scope": {
       "permission_type": "external_data_modify",
       "type": "string",
-      "enum": ["repository", "tool"],
+      "enum": [
+        "repository",
+        "tool"
+      ],
       "default": "repository",
       "description": "configure_identity 保存到当前仓库，或保存为本工具默认身份。"
     }

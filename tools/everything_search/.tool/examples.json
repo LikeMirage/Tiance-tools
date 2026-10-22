@@ -1,0 +1,34 @@
+[
+  {
+    "title": "搜索PDF文件",
+    "content": "{\"action\":\"search\",\"query\":\"ext:pdf\",\"page_size\":20}"
+  },
+  {
+    "title": "限定目录",
+    "content": "{\"action\":\"search\",\"query\":\"ESP32\",\"base_path\":\"C:\\\\Users\",\"page_size\":20}"
+  },
+  {
+    "title": "继续翻页（使用上次next_offset）",
+    "content": "{\"action\":\"search\",\"query\":\"ext:pdf\",\"page_size\":20,\"offset\":20}"
+  },
+  {
+    "title": "查看后台状态",
+    "content": "{\"action\":\"status\"}"
+  },
+  {
+    "title": "停止本工具后台",
+    "content": "{\"action\":\"stop\"}"
+  },
+  {
+    "title": "按类型、日期和大小筛选",
+    "content": "{\"action\": \"search\", \"query\": \"ext:pdf;docx dm:thisyear size:<20mb\", \"page_size\": 20}"
+  },
+  {
+    "title": "限定目录搜索正文",
+    "content": "{\"action\": \"search\", \"base_path\": \"C:\\\\Users\\\\Public\\\\Documents\", \"query\": \"ext:md;txt content:\\\"能力桥\\\"\", \"page_size\": 20}"
+  },
+  {
+    "title": "搜索UTF-8日志中的短语",
+    "content": "{\"action\": \"search\", \"base_path\": \"C:\\\\Users\\\\Public\\\\Documents\", \"query\": \"ext:log utf8content:\\\"connection refused\\\"\", \"page_size\": 20}"
+  }
+]

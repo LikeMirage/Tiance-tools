@@ -4,21 +4,37 @@
   "oneOf": [
     {
       "properties": {
-        "ok": { "const": false }
+        "ok": {
+          "const": false
+        }
       },
-      "required": ["error"]
+      "required": [
+        "error"
+      ]
     },
     {
       "properties": {
-        "ok": { "const": true },
-        "action": { "const": "query_models" }
+        "ok": {
+          "const": true
+        },
+        "action": {
+          "const": "query_models"
+        }
       },
-      "required": ["count", "providers", "models"]
+      "required": [
+        "count",
+        "providers",
+        "models"
+      ]
     },
     {
       "properties": {
-        "ok": { "const": true },
-        "action": { "const": "list_sessions" }
+        "ok": {
+          "const": true
+        },
+        "action": {
+          "const": "list_sessions"
+        }
       },
       "required": [
         "project_id",
@@ -32,8 +48,12 @@
     },
     {
       "properties": {
-        "ok": { "const": true },
-        "action": { "const": "get_session_info" }
+        "ok": {
+          "const": true
+        },
+        "action": {
+          "const": "get_session_info"
+        }
       },
       "required": [
         "project_id",
@@ -43,8 +63,12 @@
     },
     {
       "properties": {
-        "ok": { "const": true },
-        "action": { "const": "get_session" }
+        "ok": {
+          "const": true
+        },
+        "action": {
+          "const": "get_session"
+        }
       },
       "required": [
         "project_id",
@@ -62,15 +86,31 @@
     },
     {
       "properties": {
-        "ok": { "const": true },
-        "action": { "enum": ["create_session", "configure_session"] }
+        "ok": {
+          "const": true
+        },
+        "action": {
+          "enum": [
+            "create_session",
+            "configure_session"
+          ]
+        }
       },
-      "required": ["project_id", "session", "runtime_status", "history_locator"]
+      "required": [
+        "project_id",
+        "session",
+        "runtime_status",
+        "history_locator"
+      ]
     },
     {
       "properties": {
-        "ok": { "const": true },
-        "action": { "const": "name_parent_session" }
+        "ok": {
+          "const": true
+        },
+        "action": {
+          "const": "name_parent_session"
+        }
       },
       "required": [
         "project_id",
@@ -83,24 +123,50 @@
     },
     {
       "properties": {
-        "ok": { "const": true },
-        "action": { "const": "stop_session" }
+        "ok": {
+          "const": true
+        },
+        "action": {
+          "const": "stop_session"
+        }
       },
-      "required": ["project_id", "stopped_session_id", "runtime_status", "history_locator"]
+      "required": [
+        "project_id",
+        "stopped_session_id",
+        "runtime_status",
+        "history_locator"
+      ]
     },
     {
       "properties": {
-        "ok": { "const": true },
-        "action": { "const": "delete_session" }
+        "ok": {
+          "const": true
+        },
+        "action": {
+          "const": "delete_session"
+        }
       },
-      "required": ["project_id", "deleted_session_id"]
+      "required": [
+        "project_id",
+        "deleted_session_id"
+      ]
     },
     {
       "properties": {
-        "ok": { "const": true },
-        "action": { "const": "show_session" }
+        "ok": {
+          "const": true
+        },
+        "action": {
+          "const": "show_session"
+        }
       },
-      "required": ["project_id", "session_id", "shown", "runtime_status", "history_locator"]
+      "required": [
+        "project_id",
+        "session_id",
+        "shown",
+        "runtime_status",
+        "history_locator"
+      ]
     }
   ],
   "properties": {
@@ -184,11 +250,19 @@
           },
           "runtime_status": {
             "description": "会话当前运行状态。",
-            "enum": ["idle", "running", "error"],
+            "enum": [
+              "idle",
+              "running",
+              "error"
+            ],
             "type": "string"
           }
         },
-        "required": ["session_id", "title", "runtime_status"],
+        "required": [
+          "session_id",
+          "title",
+          "runtime_status"
+        ],
         "type": "object"
       },
       "type": "array"
@@ -231,7 +305,10 @@
     },
     "status": {
       "description": "自动命名任务的最终状态。",
-      "enum": ["completed", "superseded"],
+      "enum": [
+        "completed",
+        "superseded"
+      ],
       "type": "string"
     },
     "title": {
@@ -279,10 +356,18 @@
       "additionalProperties": false,
       "description": "原始历史的稳定定位信息。需要检索完整历史时，调用指定工具并传入该会话 ID。",
       "properties": {
-        "tool_name": { "const": "conversation_history_search", "type": "string" },
-        "session_id": { "type": "string" }
+        "tool_name": {
+          "const": "conversation_history_search",
+          "type": "string"
+        },
+        "session_id": {
+          "type": "string"
+        }
       },
-      "required": ["tool_name", "session_id"],
+      "required": [
+        "tool_name",
+        "session_id"
+      ],
       "type": "object"
     },
     "stopped_session_id": {

@@ -5,15 +5,44 @@
     "operation": {
       "permission_type": "runtime_modify",
       "description": "要执行的依赖管理操作。",
-      "enum": ["check", "install", "install_requirements", "list", "repair", "show", "uninstall"],
+      "enum": [
+        "check",
+        "install",
+        "install_requirements",
+        "list",
+        "repair",
+        "show",
+        "uninstall"
+      ],
       "options": [
-        {"description": "检查目标依赖目录。", "value": "check"},
-        {"description": "主动安装或升级 packages，不校对依赖声明。", "value": "install"},
-        {"description": "根据目标工具的 program/requirements.txt 一键补齐依赖。", "value": "install_requirements"},
-        {"description": "列出目标目录中的全部包。", "value": "list"},
-        {"description": "修复工具独立依赖目录的权限和失败残留。", "value": "repair"},
-        {"description": "查看指定包的已安装版本。", "value": "show"},
-        {"description": "从目标依赖目录卸载指定包。", "value": "uninstall"}
+        {
+          "description": "检查目标依赖目录。",
+          "value": "check"
+        },
+        {
+          "description": "主动安装或升级 packages，不校对依赖声明。",
+          "value": "install"
+        },
+        {
+          "description": "根据目标工具的 program/requirements.txt 一键补齐依赖。",
+          "value": "install_requirements"
+        },
+        {
+          "description": "列出目标目录中的全部包。",
+          "value": "list"
+        },
+        {
+          "description": "修复工具独立依赖目录的权限和失败残留。",
+          "value": "repair"
+        },
+        {
+          "description": "查看指定包的已安装版本。",
+          "value": "show"
+        },
+        {
+          "description": "从目标依赖目录卸载指定包。",
+          "value": "uninstall"
+        }
       ],
       "title": "操作",
       "type": "string"
@@ -38,7 +67,11 @@
       "permission_type": "runtime_modify",
       "default": [],
       "description": "install 支持普通 PyPI 包名和版本范围；show、uninstall 只填写包名；其他操作留空。主动安装不要求依赖已写入 requirements.txt。",
-      "items": {"maxLength": 200, "minLength": 1, "type": "string"},
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+      },
       "maxItems": 20,
       "title": "依赖包",
       "type": "array",
@@ -61,6 +94,8 @@
       "type": "integer"
     }
   },
-  "required": ["operation"],
+  "required": [
+    "operation"
+  ],
   "type": "object"
 }

@@ -5,7 +5,8 @@
     "parallel": true
   },
   "files": {
-    "examples": ".tool/examples.json","permissions":".tool/permissions.json",
+    "examples": ".tool/examples.json",
+    "permissions": ".tool/permissions.json",
     "input_schema": ".tool/input.schema.json",
     "output_schema": ".tool/output.schema.json"
   },
@@ -13,17 +14,6 @@
     "input": "stdin_json",
     "output": "stdout_json"
   },
-  "keywords": [
-    "SerpAPI",
-    "网络搜索",
-    "多引擎搜索",
-    "Google",
-    "Google Scholar",
-    "Bing",
-    "Baidu",
-    "学术搜索",
-    "搜索引擎"
-  ],
   "loading": {
     "dynamic": true
   },

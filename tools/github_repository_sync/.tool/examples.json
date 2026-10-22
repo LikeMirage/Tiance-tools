@@ -16,4 +16,3 @@
     "content": "普通用户无需创建 GitHub App，只需安装并授权 Tiance Desktop。自行部署或二次开发时，可在 GitHub Developer settings 创建 GitHub App，启用 Device Flow，将 Repository permissions / Contents 设为 Read and write，再安装到自己的账号并选择允许访问的仓库。"
   }
 ]
-
