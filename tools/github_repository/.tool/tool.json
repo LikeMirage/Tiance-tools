@@ -14,7 +14,10 @@
   "runtime": {
     "type": "python",
     "entry": "program/main.py",
-    "timeout_seconds": 600
+    "timeout_seconds": 600,
+    "host_capabilities": [
+      "github_repositories"
+    ]
   },
   "io": {
     "input": "stdin_json",
