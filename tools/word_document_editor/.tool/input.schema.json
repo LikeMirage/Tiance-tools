@@ -11,7 +11,8 @@
       "enum": [
         "inspect",
         "edit"
-      ]
+      ],
+      "description": "inspect 读取文档定位信息；edit 按 operations 预演或提交修改。"
     },
     "input_path": {
       "permission_type": "filesystem_read",
@@ -58,7 +59,8 @@
       "minItems": 1,
       "items": {
         "$ref": "#/$defs/editOperation"
-      }
+      },
+      "description": "edit 的有序修改列表；各项必须符合下方操作结构，使用 inspect 得到的真实定位信息。"
     },
     "inspect": {
       "permission_type": "none",
@@ -101,7 +103,8 @@
         "selection": {
           "$ref": "#/$defs/selection"
         }
-      }
+      },
+      "description": "inspect 的查询范围和返回内容选项；省略时使用各子字段默认值。"
     }
   },
   "required": [

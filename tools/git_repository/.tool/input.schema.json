@@ -35,7 +35,8 @@
         "restore",
         "revert",
         "reset"
-      ]
+      ],
+      "description": "本次仓库操作。查看用 overview/status/diff/log/show_commit；新建或下载用 init/clone；其余动作按对应字段执行。"
     },
     "dry_run": {
       "permission_type": "none",
@@ -47,7 +48,8 @@
       "permission_type": "external_data_modify",
       "type": "string",
       "default": "origin",
-      "maxLength": 80
+      "maxLength": 80,
+      "description": "远端名称；用于远端连接、抓取、推送和拉取。"
     },
     "repository": {
       "permission_type": "external_data_modify",
@@ -64,12 +66,14 @@
     "branch": {
       "permission_type": "external_data_modify",
       "type": "string",
-      "maxLength": 250
+      "maxLength": 250,
+      "description": "分支名称；用于分支操作或远端同步。"
     },
     "revision": {
       "permission_type": "external_data_modify",
       "type": "string",
-      "maxLength": 100
+      "maxLength": 100,
+      "description": "提交 ID 或 revision 表达式；用于 show_commit、create_tag、revert、reset。"
     },
     "paths": {
       "permission_type": "filesystem_write",
@@ -77,12 +81,14 @@
       "items": {
         "type": "string"
       },
-      "maxItems": 5000
+      "maxItems": 5000,
+      "description": "相对当前仓库的路径，用于 diff、commit、restore 或 update_submodules 的范围选择。"
     },
     "staged": {
       "permission_type": "none",
       "type": "boolean",
-      "default": false
+      "default": false,
+      "description": "diff 是否查看暂存区差异。"
     },
     "force": {
       "permission_type": "none",
@@ -95,22 +101,26 @@
       "type": "integer",
       "minimum": 1,
       "maximum": 100,
-      "default": 30
+      "default": 30,
+      "description": "日志等列表的最大返回条数。"
     },
     "message": {
       "permission_type": "external_data_modify",
       "type": "string",
-      "maxLength": 500
+      "maxLength": 500,
+      "description": "commit 的提交说明。"
     },
     "tag": {
       "permission_type": "external_data_modify",
       "type": "string",
-      "maxLength": 250
+      "maxLength": 250,
+      "description": "创建或删除标签时的标签名。"
     },
     "submodule_path": {
       "permission_type": "external_data_modify",
       "type": "string",
-      "maxLength": 500
+      "maxLength": 500,
+      "description": "子模块在当前仓库内的相对路径。"
     },
     "author_name": {
       "permission_type": "external_data_modify",
@@ -134,5 +144,6 @@
       "default": "repository",
       "description": "configure_identity 保存到当前仓库，或保存为本工具默认身份。"
     }
-  }
+  },
+  "description": "操作当前工作区仓库。先 overview 确认仓库状态与提交身份；写操作可先 dry_run。身份与认证来源见“提交身份与认证”，具体动作参数见各字段。"
 }

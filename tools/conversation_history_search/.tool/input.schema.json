@@ -66,14 +66,16 @@
       "type": "integer",
       "minimum": 1,
       "maximum": 100,
-      "default": 20
+      "default": 20,
+      "description": "本页最多返回的结果条数。"
     },
     "offset": {
       "permission_type": "none",
       "type": "integer",
       "minimum": 0,
       "maximum": 1000000,
-      "default": 0
+      "default": 0,
+      "description": "从第几条结果开始返回，首条为 0；翻页时保持查询条件不变。"
     },
     "include_raw": {
       "permission_type": "tiance_data_read",
@@ -92,5 +94,6 @@
   },
   "required": [
     "query"
-  ]
+  ],
+  "description": "直接以只读方式检索当前项目 .Tiance/tiance.db。查询默认针对当前会话正式消息；其他会话与记录来源须明确指定。结果只反映已保存的原始记录。"
 }

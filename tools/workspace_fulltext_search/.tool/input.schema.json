@@ -65,21 +65,24 @@
       "type": "integer",
       "minimum": 1,
       "maximum": 100,
-      "default": 20
+      "default": 20,
+      "description": "本页最多返回的结果条数。"
     },
     "offset": {
       "permission_type": "none",
       "type": "integer",
       "minimum": 0,
       "maximum": 100000,
-      "default": 0
+      "default": 0,
+      "description": "从第几条结果开始返回，首条为 0；翻页时保持查询条件不变。"
     },
     "context_chars": {
       "permission_type": "none",
       "type": "integer",
       "minimum": 40,
       "maximum": 1000,
-      "default": 160
+      "default": 160,
+      "description": "每个命中片段保留的上下文字符数。"
     },
     "check_stale": {
       "permission_type": "none",
