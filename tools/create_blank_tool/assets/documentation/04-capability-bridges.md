@@ -31,7 +31,7 @@
 
 | 能力 | 版本 | 作用与源码 |
 | --- | --- | --- |
-| `editor.tabs` | 3 | 编辑器标签及文件内容定位，查看 editorTabsClientTool.ts、useDocumentReveal.ts；旧标签动作的后台项目处理见 backgroundEditorTabsClientTool.ts |
+| `editor.tabs` | 4 | 编辑器标签及文件内容定位，查看 editorTabsClientTool.ts、useDocumentReveal.ts；旧标签动作的后台项目处理见 backgroundEditorTabsClientTool.ts |
 | `conversation.management` | 3 | 会话层级/分类查询、读取、创建、配置、删除预览、精确批量及递归删除，conversationManagementClientTool.ts |
 | `conversation.interaction` | 1 | 向会话发送任务、等待等，conversationInteractionClientTool.ts |
 | `tool.projects` | 2 | 工具分类、查询、新建、原地初始化、重命名、移动、开关与删除，toolProjectClientTool.ts |
@@ -49,9 +49,9 @@
 
 新增批量 API 是通用项目会话接口 `DELETE /api/projects/{project_id}/conversations`，接收明确 session_ids 和可选 protected_session_id，复用原删除流程；不是按工具名添加的后端专用入口。工具运行时使用请求中的 project_id/session_id，不跟随当前界面选择。使用 v2 参数需在工具清单中设置 min_version=2；旧客户端不会降级忽略参数。
 
-### editor.tabs v3：标签与内容定位
+### editor.tabs v4：标签与内容定位
 
-标准工具调用名为 `editor_tabs_manager`。`list_tabs`、`open_file`、`focus_file`、`close_clean_tabs`、`close_others_clean` 保持原有语义；v2 引入 `reveal_file`，v3 保留单目标参数并增加文本多范围。工具清单引用 `{"name":"editor.tabs","min_version":3}`，使用 `client_json` 输入输出，不需要 Python 程序或新增后端业务路由。仅声明能力不会给旧前端增加实现，必须部署带 v3 执行器的前端。
+标准工具调用名为 `editor_tabs_manager`。`list_tabs`、`open_file`、`focus_file`、`close_clean_tabs`、`close_others_clean` 保持原有语义；v2 引入 `reveal_file`，v3 保留单目标参数并增加文本多范围。v4 增加 `open_url`（参数 `url`）和 `focus_web`（参数 `tab_id`）。`list_tabs` 按顺序返回项目文件和网页，网页使用独立的 `url` 字段，`path` 为 null，激活页对应 `active_tab_id`。后台项目保存选中状态，切回项目时恢复。工具清单引用 `{"name":"editor.tabs","min_version":4}`，使用 `client_json` 输入输出，不需要 Python 程序或新增后端业务路由。仅声明能力不会给旧前端增加实现，必须部署带 v4 执行器的前端。
 
 `reveal_file` 必填 `path` 和 `target`，不接受批量 `paths`。path 是调用方项目中的相对路径，示例使用 `/`；项目身份取自请求的 `project_id`，不能通过参数指定或回退为其他项目。target 只接受下面一种结构，不混用字段：
 
@@ -177,8 +177,8 @@ SDK 从环境读取 `TIANCE_API_BASE_URL` 和 `TIANCE_HOST_CAPABILITY_TOKEN`，�
 
 | 能力名称 | POST 路径 | 用途与边界 |
 | --- | --- | --- |
-| `web_search` | `/llm/provider-capabilities/web-search` | 使用本次调用的供应商/模型执行内置搜索；要求模型上下文 |
-| `deepseek_web` | `/llm/provider-capabilities/deepseek-web` | 使用模型集 DeepSeek 凭据调用 Search/Fetch，不把 Key 返回给工具 |
+| `session_model` | `/llm/provider-capabilities/session-model` | 获取调用会话的模型与生成地址。可用 `endpoint` 选择本工具在 `runtime.session_model_endpoints` 声明的同源端点，按该端点的协议提交请求 |
+| `provider_auth` | `/llm/provider-capabilities/authenticated-post` | 为清单声明的供应商 HTTPS 接口附加凭据并提交 JSON |
 | `github_sync` | `/github/sync/tool` | 调用方项目与 GitHub 仓库的绑定、推送、拉取；复用宿主登录 |
 | `git_repository` | `/git/repository/tool` | 调用方项目的本地 Git、远端及分支等操作 |
 | `github_repositories` | `/github/platform/repositories` | GitHub 仓库查询、创建及管理 |
@@ -198,17 +198,20 @@ SDK 从环境读取 `TIANCE_API_BASE_URL` 和 `TIANCE_HOST_CAPABILITY_TOKEN`，�
 
 下列是能力端点的请求体示例，不能原样当成任意工具的输入 Schema。业务工具可以提供更适合用户的参数，再转换为能力请求；仍须保留真实操作对应的参数权限。
 
-**模型搜索：**
+**供应商鉴权与会话模型**
 
 ```python
-call_host_capability("web_search", {"query": "待搜索的问题"}, timeout_seconds=30)
-call_host_capability("deepseek_web", {
-    "action": "search", "query": "待搜索的问题", "count": 5, "need_content": False
-}, timeout_seconds=30)
-call_host_capability("deepseek_web", {"action": "fetch", "url": "https://example.com/"}, timeout_seconds=30)
+source = call_host_capability("session_model", {"operation": "source"}, timeout_seconds=10)
+call_host_capability("session_model", {
+    "operation": "post", "protocol_family": source["protocol_family"], "body": model_request
+}, timeout_seconds=150)
+call_host_capability("provider_auth", {
+    "endpoint": "search",
+    "body": {"query": "待搜索的问题"}
+}, timeout_seconds=150)
 ```
 
-`web_search` 只接收 query，模型身份来自后端授权上下文。DeepSeek Search 的 count 为 1–50；其他选项及返回合同见 `app/schemas/llm/deepseek_web.py` 和对应路由。官方 DeepSeek 工具自己的 config.json Key 优先逻辑属于工具程序：自行配置了 Key 时直接调用官方接口，没配置才复用模型集能力。能力桥本身不替工具修改私有 config.json。
+固定接口须在工具 `runtime.provider_endpoints` 中声明，例如 `{"search":{"provider_id":"deepseek","url":"https://api.deepseek.com/v1/tools/search","auth_scheme":"bearer_token"}}`。请求须匹配本次授权中的完整地址和供应商，且与供应商配置的端点同源。工具读取返回的 HTTP `status` 和 JSON `data`。会话模型请求另返回标准 `usage`。模型身份来自调用上下文，搜索适配、搜索结果与落盘由工具维护。
 
 **Git 与 GitHub：**
 
